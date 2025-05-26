@@ -14,14 +14,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 let post = [
   {
+    id: "1a",
     username: "apnacollage",
     content: "I Love Coding",
   },
   {
+    id: "2b",
     username: "rakeshmahato",
     content: "Hard Work",
   },
   {
+    id: "3c",
     username: "rakesh",
     content: "I got selected my first internship",
   },
@@ -46,11 +49,22 @@ app.get("/posts/new", (req, res) => {
 
 app.post("/posts", (req, res) => {
   console.log(req.body);
-let {username, content} = req.body;
-  post.push({username,content});   // new post ko push kr diya post array mein
+  let { username, content } = req.body;
+  post.push({ username, content });   // new post ko push kr diya post array mein
   res.redirect('/posts')   // push hone k baad redirect kr dega posts url mein
   res.send("you have upload the post");
 });
+
+// new path by id
+
+app.get("/posts/:id", (req, res) => {
+  let { id } = req.params;
+  let idPosts = post.find((p) => id === p.id);  // post.find() post wala array se find kate ka 
+  console.log(idPosts); // ye idPosts ko console mein print karega
+
+  res.render("show.ejs", { idPosts }); // ye show.ejs file ko render karega aur idPosts ko pass karega
+});
+
 
 app.listen(port, () => {
   console.log(`Listening the post: ${port}`);
