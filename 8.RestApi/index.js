@@ -1,7 +1,15 @@
 const express = require("express");
 const app = express();
 const port = 3000;
-const path = require("path");
+const path = require("path"); // npm install path
+// ye path module ko use krne ke liye hain jo ki file path ko handle karega
+
+
+const methodOverride = require('method-override') // npm install method-override
+app.use(methodOverride('_method'))
+
+const { v4: uuidv4 } = require('uuid'); // npm install uuid
+// uuidv4(); // ye unique id generate karega
 
 app.use(express.urlencoded({ extended: true })); // ye post use krne k liye likha hain ye incode data read karega
 
@@ -14,17 +22,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 let post = [
   {
-    id: "1a",
+    id: uuidv4(), // ye unique id generate karega
     username: "apnacollage",
     content: "I Love Coding",
   },
   {
-    id: "2b",
+    id: uuidv4(),
     username: "rakeshmahato",
     content: "Hard Work",
   },
   {
-    id: "3c",
+    id: uuidv4(),
     username: "rakesh",
     content: "I got selected my first internship",
   },
@@ -49,8 +57,9 @@ app.get("/posts/new", (req, res) => {
 
 app.post("/posts", (req, res) => {
   console.log(req.body);
-  let { username, content } = req.body;
-  post.push({ username, content });   // new post ko push kr diya post array mein
+  let {  username, content } = req.body;
+  let id = uuidv4(); // ye unique id generate karega
+  post.push({ id , username, content });   // new post ko push kr diya post array mein
   res.redirect('/posts')   // push hone k baad redirect kr dega posts url mein
   res.send("you have upload the post");
 });
@@ -59,6 +68,7 @@ app.post("/posts", (req, res) => {
 
 app.get("/posts/:id", (req, res) => {
   let { id } = req.params;
+  console.log(id); // ye id ko console mein print karega
   let idPosts = post.find((p) => id === p.id);  // post.find() post wala array se find kate ka 
   console.log(idPosts); // ye idPosts ko console mein print karega
 
@@ -66,6 +76,40 @@ app.get("/posts/:id", (req, res) => {
 });
 
 
+//================================EDITE POST BY PATCH==================================//
+
+
+
+
+app.patch("/posts/:id",(req,res)=>{
+  let {id} = req.params; // ye id ko req.params se le lega
+  let idPosts = post.find((p) => id === p.id);
+  let newContent = req.body.content; // ye new content ko req.body se le lega
+  idPosts.content = newContent; // ye idPosts.content ko newContent se update karega
+  res.redirect(`/posts/${idPosts.id}`); // ye posts url mein redirect karega
+
+  console.log(idPosts); // ye id ko console mein print karega
+console.log("path request work");
+
+});
+
+// edit data SUBMIT BUTTON WALA FUNCTIONLITY HAIN
+
+app.get("/posts/:id/edit",(req,res)=>{
+  let {id} = req.params;
+  let idPosts = post.find((p) => id===p.id);
+  post.push(idPosts.content);
+  res.render("edit.ejs", {idPosts});
+    post.push({ id , username, content });  // ye edit.ejs file ko render karega aur idPosts ko data pass karega
+ //i want to redire page after edite to post
+
+});
+
+
+
+
+
+//======================================================================================================
 app.listen(port, () => {
   console.log(`Listening the post: ${port}`);
 });
