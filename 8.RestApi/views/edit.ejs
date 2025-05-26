@@ -65,7 +65,7 @@
     <p>Post id: <%= idPosts.id %></p>
     <p>Post username  @<%= idPosts.username %> </p>
     <form class="form" action="http://localhost:3000/posts/<%= idPosts.id %>?_method=PATCH" method="post">
-        <textarea rows="15" cols="30" class="input textarea" name="content" id="content" name="content"><%= idPosts.content %> </textarea>
+        <textarea rows="15" cols="30" class="input textarea" name="content" id="content"><%= idPosts.content %> </textarea>
         <button id="submitbtn">Submit</button>
        
     </form>

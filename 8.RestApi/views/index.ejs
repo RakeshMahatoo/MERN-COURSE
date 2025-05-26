@@ -41,8 +41,11 @@
         <%= postData.content %>
       </h4>
     
-      <a href="http://localhost:3000/posts/<%= postData.id %>" target="_blank">Details</a>
-        <a href="http://localhost:3000/posts/<%= postData.id %>/edit" target="_blank">Edit</a>
+      <a href="http://localhost:3000/posts/<%= postData.id %>">Details</a>
+      <a href="http://localhost:3000/posts/<%= postData.id %>/edit">Edit</a>
+     <form action="http://localhost:3000/posts/<%= postData.id %>?_method=DELETE" method="POST" style="display:inline;">
+       <button type="submit">Delete</button>
+     </form>
     </div>
 
     <% } %>
